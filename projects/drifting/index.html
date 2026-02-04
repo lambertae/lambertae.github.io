@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generative Modeling via Drifting</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <meta name="description" content="Project page for Generative Modeling via Drifting." />
+  <link rel="preload" as="image" href="assets/teaser_main.png" />
+</head>
+<body>
+  <header class="hero">
+    <div class="container">
+      <h1 class="title">Generative Modeling via Drifting</h1>
+      <p class="authors">
+        Mingyang Deng<sup>1</sup>, He Li<sup>1</sup>, Tianhong Li<sup>1</sup>, Yilun Du<sup>2</sup>, Kaiming He<sup>1</sup>
+      </p>
+      <p class="affiliations">
+        <sup>1</sup>MIT &nbsp;&nbsp; <sup>2</sup>Harvard University
+      </p>
+
+      <div class="links">
+        <a href="https://arxiv.org/abs/TODO" class="btn">Paper</a>
+        <a href="https://github.com/lambertae/drifting-models" class="btn">Code</a>
+        <a href="https://colab.research.google.com/github/lambertae/drifting-models/blob/main/notebooks/tutorial.ipynb" class="btn">Colab Tutorial</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="tldr">
+    <div class="container">
+      <h2>TL;DR</h2>
+      <ul>
+        <li><strong>New paradigm:</strong> Drifting Models evolve the model’s pushforward distribution <em>during training</em> (instead of iterating at inference time like diffusion/flow).</li>
+        <li><strong>Drifting field:</strong> We introduce a drifting field <span class="v-label">V</span> that moves samples; by design, <span class="v-label">V</span> vanishes when the generated distribution matches data (equilibrium).</li>
+        <li><strong>Algorithm:</strong> Estimate <span class="v-label">V</span> from mini-batches, create a “drifted target”, and regress the network to match it. Inference is a single forward pass.</li>
+        <li><strong>Flexible:</strong> Works with representation-space loss and classifier-free-guidance-style training tricks.</li>
+        <li><strong>Strong performance:</strong> ImageNet 256×256, 1 NFE: FID <strong>1.54</strong> (latent) and <strong>1.61</strong> (pixel).</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="visualization">
+    <div class="container">
+      <h2>Training dynamics</h2>
+
+      <table class="toy-table" width="100%">
+        <tr>
+          <th width="33%" style="text-align: center">Middle Init</th>
+          <th width="33%" style="text-align: center">Far-Away Init</th>
+          <th width="33%" style="text-align: center">Collapsed Init</th>
+        </tr>
+        <tr>
+          <td style="text-align: center"><img src="assets/toy_case1.gif" alt="Middle init dynamics" loading="lazy" decoding="async" /></td>
+          <td style="text-align: center"><img src="assets/toy_case2.gif" alt="Far-away init dynamics" loading="lazy" decoding="async" /></td>
+          <td style="text-align: center"><img src="assets/toy_case3.gif" alt="Collapsed init dynamics" loading="lazy" decoding="async" /></td>
+        </tr>
+      </table>
+
+      <div class="callout">
+        <div class="callout-title">Training dynamics</div>
+        <div class="callout-body">the generated distribution <strong>q</strong> evolves towards the data distribution <strong>p</strong>.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="method">
+    <div class="container">
+      <h2>Abstract</h2>
+      <div class="method-block">
+        <p>
+          Generative modeling can be formulated as learning a mapping <em>f</em> such that its pushforward distribution matches the data distribution.
+          The pushforward behavior can be carried out iteratively at inference time, e.g., in diffusion/flow-based models.
+          In this paper, we propose a new paradigm called <em>Drifting Models</em>, which evolve the pushforward distribution during training and naturally admit one-step inference.
+          We introduce a drifting field that governs the sample movement and achieves equilibrium when the distributions match.
+          This leads to a training objective that allows the neural network optimizer to evolve the distribution.
+          In experiments, our one-step generator achieves state-of-the-art results on ImageNet 256×256, with FID <strong>1.54</strong> in latent space and <strong>1.61</strong> in pixel space.
+        </p>
+      </div>
+
+      <div class="teaser-image">
+        <img src="assets/teaser_main.png" alt="Training evolution teaser" fetchpriority="high" />
+      </div>
+    </div>
+  </section>
+
+  <section class="results">
+    <div class="container">
+      <h2>Generated Samples</h2>
+      <p class="samples-note">Uncurated conditional ImageNet 256×256 samples (1 NFE, CFG Scale 1.0, FID 1.54)</p>
+
+      <div class="samples-gallery">
+        <div class="sample-grid-large">
+          <img src="assets/class_291_lion.jpg" alt="Lion" loading="lazy" decoding="async" />
+          <img src="assets/class_022_bald_eagle.jpg" alt="Bald Eagle" loading="lazy" decoding="async" />
+          <img src="assets/class_088_macaw.jpg" alt="Macaw" loading="lazy" decoding="async" />
+          <img src="assets/class_288_leopard.jpg" alt="Leopard" loading="lazy" decoding="async" />
+          <img src="assets/class_386_African_elephant.jpg" alt="African Elephant" loading="lazy" decoding="async" />
+          <img src="assets/class_296_ice_bear.jpg" alt="Ice Bear" loading="lazy" decoding="async" />
+          <img src="assets/class_483_castle.jpg" alt="Castle" loading="lazy" decoding="async" />
+          <img src="assets/class_698_palace.jpg" alt="Palace" loading="lazy" decoding="async" />
+          <img src="assets/class_970_alp.jpg" alt="Alp" loading="lazy" decoding="async" />
+          <img src="assets/class_980_volcano.jpg" alt="Volcano" loading="lazy" decoding="async" />
+          <img src="assets/class_973_coral_reef.jpg" alt="Coral Reef" loading="lazy" decoding="async" />
+          <img src="assets/class_812_space_shuttle.jpg" alt="Space Shuttle" loading="lazy" decoding="async" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="resources">
+    <div class="container">
+      <h2>Resources</h2>
+      <div class="resources-grid">
+        <div class="resource-card highlight">
+          <div class="resource-title">Colab tutorial</div>
+          <p class="resource-desc"><strong>Runs on CPU</strong> (no GPU required). Also works on a low-end GPU if you switch runtime.</p>
+          <div class="resource-actions">
+            <a class="btn" href="https://colab.research.google.com/github/lambertae/drifting-models/blob/main/notebooks/tutorial.ipynb">Open in Colab</a>
+          </div>
+          <div class="colab-ad">
+            <div class="colab-ad-inner">
+              <div class="colab-ad-title">Notebook preview</div>
+              <!-- Replace this SVG with a real screenshot later if desired. -->
+              <svg class="colab-placeholder" viewBox="0 0 960 540" role="img" aria-label="Colab tutorial screenshot placeholder">
+                <rect x="0" y="0" width="960" height="540" rx="18" fill="#0b1220"></rect>
+                <rect x="36" y="40" width="888" height="58" rx="12" fill="#111b31"></rect>
+                <circle cx="72" cy="69" r="10" fill="#ef4444"></circle>
+                <circle cx="102" cy="69" r="10" fill="#f59e0b"></circle>
+                <circle cx="132" cy="69" r="10" fill="#22c55e"></circle>
+                <text x="170" y="76" fill="#cbd5e1" font-family="Inter, system-ui, sans-serif" font-size="20">Colab tutorial: drifting in ~5 minutes</text>
+                <rect x="36" y="118" width="560" height="370" rx="12" fill="#0f172a"></rect>
+                <rect x="612" y="118" width="312" height="370" rx="12" fill="#0f172a"></rect>
+                <text x="64" y="160" fill="#93c5fd" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="18"># Step 1: compute V from minibatches</text>
+                <text x="64" y="198" fill="#e5e7eb" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="18">V = compute_V(x, y_pos, y_neg)</text>
+                <text x="64" y="236" fill="#e5e7eb" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="18">x_target = stopgrad(x + V)</text>
+                <text x="64" y="274" fill="#e5e7eb" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="18">loss = mse(x, x_target)</text>
+                <text x="64" y="330" fill="#94a3b8" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="16"># then: toy 2D → MNIST</text>
+                <text x="640" y="160" fill="#a7f3d0" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="16">[log]</text>
+                <text x="640" y="196" fill="#e5e7eb" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15">step 0000 | loss 1.23</text>
+                <text x="640" y="224" fill="#e5e7eb" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15">step 0100 | loss 0.62</text>
+                <text x="640" y="252" fill="#e5e7eb" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15">step 0200 | loss 0.41</text>
+                <text x="640" y="280" fill="#e5e7eb" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15">…</text>
+                <text x="640" y="330" fill="#93c5fd" font-family="Inter, system-ui, sans-serif" font-size="16">Click “Open in Colab” above</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="resource-card">
+          <div class="resource-title">Code release</div>
+          <p class="resource-desc"><strong>In progress.</strong> ImageNet training code will be released.</p>
+          <ul class="repo-list">
+            <li><strong>Training / sampling code:</strong> (in progress)</li>
+            <li><strong>Tutorial notebook:</strong> available on Colab</li>
+            <li><strong>Project page assets:</strong> gifs, teaser, sample images</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bibtex">
+    <div class="container">
+      <h2>Citation</h2>
+      <pre><code>@article{deng2026drifting,
+  title={Generative Modeling via Drifting},
+  author={Deng, Mingyang and Li, He and Li, Tianhong and Du, Yilun and He, Kaiming},
+  journal={arXiv preprint},
+  year={2026}
+}</code></pre>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>
+        <a href="https://github.com/lambertae/drifting-models">GitHub</a>
+        &nbsp;·&nbsp;
+        <a href="https://colab.research.google.com/github/lambertae/drifting-models/blob/main/notebooks/tutorial.ipynb">Colab</a>
+      </p>
+    </div>
+  </footer>
+</body>
+</html>
+
