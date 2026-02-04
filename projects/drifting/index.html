@@ -21,25 +21,11 @@
       </p>
 
       <div class="links">
-        <a href="https://arxiv.org/abs/TODO" class="btn">Paper</a>
-        <a href="https://github.com/lambertae/drifting-models" class="btn">Code</a>
-        <a href="https://colab.research.google.com/github/lambertae/drifting-models/blob/main/notebooks/tutorial.ipynb" class="btn">Colab Tutorial</a>
+        <a href="#" class="btn disabled">Paper (arXiv pending)</a>
+        <a href="https://colab.research.google.com/github/lambertae/lambertae.github.io/blob/main/projects/drifting/notebooks/tutorial.ipynb" class="btn">Colab Tutorial</a>
       </div>
     </div>
   </header>
-
-  <section class="tldr">
-    <div class="container">
-      <h2>TL;DR</h2>
-      <ul>
-        <li><strong>New paradigm:</strong> Drifting Models evolve the model’s pushforward distribution <em>during training</em> (instead of iterating at inference time like diffusion/flow).</li>
-        <li><strong>Drifting field:</strong> We introduce a drifting field <span class="v-label">V</span> that moves samples; by design, <span class="v-label">V</span> vanishes when the generated distribution matches data (equilibrium).</li>
-        <li><strong>Algorithm:</strong> Estimate <span class="v-label">V</span> from mini-batches, create a “drifted target”, and regress the network to match it. Inference is a single forward pass.</li>
-        <li><strong>Flexible:</strong> Works with representation-space loss and classifier-free-guidance-style training tricks.</li>
-        <li><strong>Strong performance:</strong> ImageNet 256×256, 1 NFE: FID <strong>1.54</strong> (latent) and <strong>1.61</strong> (pixel).</li>
-      </ul>
-    </div>
-  </section>
 
   <section class="visualization">
     <div class="container">
@@ -62,6 +48,19 @@
         <div class="callout-title">Training dynamics</div>
         <div class="callout-body">the generated distribution <strong>q</strong> evolves towards the data distribution <strong>p</strong>.</div>
       </div>
+    </div>
+  </section>
+
+  <section class="tldr">
+    <div class="container">
+      <h2>TL;DR</h2>
+      <ul>
+        <li><strong>New paradigm:</strong> Drifting Models evolve the model's pushforward distribution <em>during training</em> (instead of iterating at inference time like diffusion/flow).</li>
+        <li><strong>Drifting field:</strong> We introduce a drifting field <b>V</b> that moves samples; by design, <b>V</b> vanishes when the generated distribution matches data (equilibrium).</li>
+        <li><strong>Algorithm:</strong> Estimate <b>V</b> from mini-batches, create a "drifted target", and regress the network to match it. Inference is a single forward pass.</li>
+        <li><strong>Flexible:</strong> Works with representation-space loss and classifier-free-guidance-style training tricks.</li>
+        <li><strong>Strong performance:</strong> ImageNet 256×256, 1 NFE: FID <strong>1.54</strong> (latent) and <strong>1.61</strong> (pixel).</li>
+      </ul>
     </div>
   </section>
 
@@ -115,9 +114,9 @@
       <div class="resources-grid">
         <div class="resource-card highlight">
           <div class="resource-title">Colab tutorial</div>
-          <p class="resource-desc"><strong>Runs on CPU</strong> (no GPU required). Also works on a low-end GPU if you switch runtime.</p>
+          <p class="resource-desc">Open the tutorial notebook in <strong>Google Colab</strong>. The notebook is included in this repo.</p>
           <div class="resource-actions inline" style="justify-content: center;">
-            <a class="btn" href="https://colab.research.google.com/github/lambertae/drifting-models/blob/main/notebooks/tutorial.ipynb">Open in Colab</a>
+            <a class="btn" href="https://colab.research.google.com/github/lambertae/lambertae.github.io/blob/main/projects/drifting/notebooks/tutorial.ipynb">Open in Google Colab</a>
           </div>
           <div class="colab-ad">
             <div class="colab-ad-inner">
@@ -142,22 +141,14 @@
                 <text x="640" y="224" fill="#e5e7eb" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15">step 0100 | loss 0.62</text>
                 <text x="640" y="252" fill="#e5e7eb" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15">step 0200 | loss 0.41</text>
                 <text x="640" y="280" fill="#e5e7eb" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15">…</text>
-                <text x="640" y="330" fill="#93c5fd" font-family="Inter, system-ui, sans-serif" font-size="16">Click “Open in Colab” above</text>
+                <text x="640" y="330" fill="#93c5fd" font-family="Inter, system-ui, sans-serif" font-size="16">Click “Open in Google Colab” above</text>
               </svg>
             </div>
           </div>
         </div>
         <div class="resource-card">
-          <div class="resource-title">Code release</div>
-          <p class="resource-desc"><strong>In progress.</strong> ImageNet training code will be released.</p>
-          <div class="resource-actions inline" style="justify-content: center;">
-            <a class="btn" href="https://github.com/lambertae/drifting-models">GitHub repo</a>
-          </div>
-          <ul class="repo-list">
-            <li><strong>Training / sampling code:</strong> (in progress)</li>
-            <li><strong>Tutorial notebook:</strong> available on Colab</li>
-            <li><strong>Project page assets:</strong> gifs, teaser, sample images</li>
-          </ul>
+          <div class="resource-title">Release</div>
+          <p class="resource-desc">ImageNet training and sampling code will be released.</p>
         </div>
       </div>
     </div>
@@ -178,9 +169,7 @@
   <footer>
     <div class="container">
       <p>
-        <a href="https://github.com/lambertae/drifting-models">GitHub</a>
-        &nbsp;·&nbsp;
-        <a href="https://colab.research.google.com/github/lambertae/drifting-models/blob/main/notebooks/tutorial.ipynb">Colab</a>
+        <a href="https://colab.research.google.com/github/lambertae/lambertae.github.io/blob/main/projects/drifting/notebooks/tutorial.ipynb">Colab</a>
       </p>
     </div>
   </footer>
