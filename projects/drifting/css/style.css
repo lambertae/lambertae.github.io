@@ -541,7 +541,7 @@ footer a:hover {
 
 .resources-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 20px;
 }
 
@@ -586,6 +586,45 @@ footer a:hover {
 
 .resource-actions {
     margin: 10px 0 14px;
+}
+
+.resource-actions.inline {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--primary);
+    border: 1px solid rgba(37, 99, 235, 0.35);
+}
+
+.btn-outline:hover {
+    background: rgba(37, 99, 235, 0.08);
+}
+
+.figure-links {
+    text-align: center;
+    margin-top: 12px;
+}
+
+.figure-links a {
+    margin: 0 6px;
+}
+
+/* Slightly smaller tiles to avoid looking blurry on HiDPI displays */
+.toy-table {
+    max-width: 980px;
+}
+
+.sample-grid-large {
+    max-width: 720px;
+}
+
+.sample-grid-large img {
+    aspect-ratio: auto;
+    object-fit: contain;
 }
 
 .repo-list {
