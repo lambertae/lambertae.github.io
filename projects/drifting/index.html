@@ -58,8 +58,8 @@
         <li><strong>New paradigm:</strong> Drifting Models evolve the model's pushforward distribution <em>during training</em> (instead of iterating at inference time like diffusion/flow).</li>
         <li><strong>Drifting field:</strong> We introduce a drifting field <b>V</b> that moves samples; by design, <b>V</b> vanishes when the generated distribution matches data (equilibrium).</li>
         <li><strong>Algorithm:</strong> Estimate <b>V</b> from mini-batches, create a "drifted target", and regress the network to match it. Inference is a single forward pass.</li>
-        <li><strong>Flexible:</strong> Works with representation-space loss and classifier-free-guidance-style training tricks.</li>
-        <li><strong>Strong performance:</strong> ImageNet 256×256, 1 NFE: FID <strong>1.54</strong> (latent) and <strong>1.61</strong> (pixel).</li>
+        <li><strong>Flexibility:</strong> Works with representation-space loss and classifier-free-guidance.</li>
+        <li><strong>Strong performance:</strong> ImageNet 256×256: State-of-the-art 1-NFE FID <strong>1.54</strong> (latent) and <strong>1.61</strong> (pixel).</li>
       </ul>
     </div>
   </section>
@@ -148,7 +148,7 @@
         </div>
         <div class="resource-card">
           <div class="resource-title">Release</div>
-          <p class="resource-desc">ImageNet training and sampling code will be released.</p>
+          <p class="resource-desc">ImageNet training code and models will be released.</p>
         </div>
       </div>
     </div>
